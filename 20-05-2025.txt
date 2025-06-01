@@ -127,3 +127,6 @@ ALTER TABLE orders ADD CONSTRAINT fk_customer FOREIGN KEY (c_id) REFERENCES cust
 ALTER TABLE orders DROP FOREIGN KEY fk_customer;
 SHOW CREATE TABLE orders;
 
+ALTER TABLE orders ADD CONSTRAINT checkamount CHECK (amount > 0);
+
+
