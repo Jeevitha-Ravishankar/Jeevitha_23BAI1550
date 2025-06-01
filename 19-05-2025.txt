@@ -1,0 +1,181 @@
+
+# delete ,drop,truncate
+
+#Drop - DDL complete drop of the database/table/column ( NEVER COME BACK PERMANENT ACTION)
+
+show databases;
+DROP DATABASE VIT;
+
+USE college;
+Show Tables;
+DESC student_details;
+ALTER TABLE student_details DROP COLUMN phoneno;
+
+#Delete - for Deleting particular column/raw/table (only information/data will be deleted structure remains same, 
+# we can goback to previous state by using revoke.)
+
+
+Create database Employees;
+Use employees;
+
+
+CREATE TABLE Worker (
+    id INT,
+    fname VARCHAR(50),
+    lname VARCHAR(50),
+    salary DECIMAL(10, 2),
+    joining_date DATE,
+    department VARCHAR(50)
+);
+
+
+INSERT INTO Worker (id, fname, lname, salary, joining_date, department) VALUES
+(1, 'Amit', 'Sharma', 55000.00, '2021-01-15', 'HR'),
+(2, 'Priya', 'Mehta', 72000.00, '2020-03-22', 'Account'),
+(3, 'Rahul', 'Verma', 48000.00, '2022-07-10', 'Admin'),
+(4, 'Sneha', 'Patel', 67000.00, '2019-11-05', 'HR'),
+(5, 'Karan', 'Singh', 53000.00, '2021-05-12', 'Admin'),
+(6, 'Neha', 'Reddy', 61000.00, '2023-02-01', 'Account'),
+(7, 'Vikram', 'Joshi', 75000.00, '2018-09-17', 'Admin'),
+(8, 'Pooja', 'Desai', 46000.00, '2022-04-25', 'Account'),
+(9, 'Arjun', 'Mishra', 69000.00, '2020-12-19', 'HR'),
+(10, 'Anjali', 'Nair', 58000.00, '2021-08-30', 'Admin');
+
+
+
+
+SELECT * FROM Worker;
+
+DELETE FROM worker ;
+
+DELETE FROM Worker WHERE salary <=47000;
+DELETE FROM Worker WHERE department='Sales';
+DELETE FROM Worker WHERE joining_date < '2021-01-01';
+DELETE FROM Worker WHERE id = 5;
+
+DESC WORKER;
+
+#TRUNCATE - structure remains,cannot go back to the previous state,REMOVE ALL THE ROWS FROM TABLE
+
+TRUNCATE TABLE WORKER;
+
+# ROLLBACK,SAVEPOINT
+
+CREATE DATABASE VIT;
+
+USE VIT;
+
+CREATE TABLE CSE (
+    ID INT,
+    NAME VARCHAR(50)
+);
+
+START TRANSACTION;
+INSERT INTO CSE (ID, NAME) VALUES (1, 'JEEVITHA');
+SAVEPOINT A;
+INSERT INTO CSE (ID, NAME) VALUES (2, 'DHANA');
+SAVEPOINT B;
+
+DELETE FROM CSE WHERE ID=2;
+SELECT * FROM CSE;
+
+ROLLBACK to B;
+SELECT * FROM CSE;
+
+START TRANSACTION;
+
+INSERT INTO CSE (ID, NAME) VALUES (3, 'PRABHA');
+SAVEPOINT C;
+DELETE FROM CSE WHERE ID = 3;
+ROLLBACK TO C;
+COMMIT;
+
+SELECT * FROM CSE;
+
+
+START TRANSACTION;
+INSERT INTO CSE (ID, NAME) VALUES (4, 'Mani');
+SAVEPOINT A11;
+DELETE FROM CSE WHERE ID = 4;
+COMMIT;
+ROLLBACK TO A11; # cant go back due to commit
+
+SELECT * FROM CSE;
+
+
+
+SELECT * FROM WORKER;
+SELECT FNAME AS EMP_NAME FROM WORKER;
+DESC WORKER;
+
+#OPERATOR LOGICAL AND COMPARATIVE
+
+SELECT * FROM WORKER;
+
+SELECT FNAME,DEPARTMENT FROM WORKER WHERE SALARY>60000;
+
+SELECT * FROM Worker WHERE department = 'Account';
+
+SELECT * FROM Worker WHERE department <> 'HR';
+
+SELECT * FROM Worker WHERE salary > 60000;
+
+SELECT * FROM Worker WHERE joining_date < '2021-01-01';
+
+SELECT * FROM Worker WHERE salary >= 55000;
+
+SELECT * FROM Worker WHERE joining_date <= '2020-12-31';
+
+#AND OR NOT
+
+SELECT FNAME,DEPARTMENT FROM Worker
+WHERE department = 'HR' AND salary > 200000;
+
+SELECT * FROM Worker
+WHERE (department = 'HR' AND department='ADMIN') AND salary <200000;
+
+SELECT * FROM Worker WHERE (department = 'HR' OR department = 'Account')
+ AND salary >= 100000 AND salary < 300000;
+ 
+ SELECT * FROM Worker WHERE MOD(id, 2) = 0 AND department IN ('Admin', 'HR') AND salary = (SELECT MAX(salary) FROM Worker WHERE MOD(id, 2) = 0 AND department IN ('Admin', 'HR'));
+
+
+
+SELECT * FROM Worker
+WHERE department = 'Finance' AND salary >= 60000;
+
+SELECT * FROM Worker
+WHERE department <> 'HR' AND salary < 55000;
+
+SELECT * FROM Worker
+WHERE salary > 50000 AND salary < 70000;
+
+SELECT * FROM Worker
+WHERE joining_date >= '2021-01-01' AND salary <= 60000;
+
+SELECT * FROM Worker
+WHERE (department = 'IT' OR department = 'Sales') AND salary > 65000;
+
+SELECT * FROM Worker
+WHERE department <> 'Finance' AND department <> 'Marketing' AND salary >= 58000;
+
+SELECT * FROM Worker
+WHERE salary < 48000 OR joining_date < '2020-01-01';
+
+SELECT * FROM Worker
+WHERE NOT salary > 70000 AND department = 'HR';
+
+#IN & NOT IN OPERATOR
+
+SELECT * FROM worker where department  IN ('HR','Admin');
+SELECT * FROM worker where department NOT IN ('HR','Admin');
+
+# EVEN ID,DEP IN ADMIN OR HR,MAX SALARY 
+SELECT * FROM Worker WHERE MOD(id, 2) = 0 AND department IN ('Admin', 'HR') AND salary = (SELECT MAX(salary) FROM Worker WHERE MOD(id, 2) = 0 AND department IN ('Admin', 'HR'));
+
+
+
+
+
+
+
