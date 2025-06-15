@@ -1,0 +1,90 @@
+CREATE DATABASE college;
+USE college;
+CREATE TABLE student_details (
+    student_id INT ,
+    name VARCHAR(50),
+    marks INT,
+    email VARCHAR(100)
+);
+
+CREATE TABLE faculty_details (
+    faculty_id INT ,
+    name VARCHAR(50),
+    subject VARCHAR(50),
+    phone VARCHAR(15)
+);
+
+CREATE TABLE course_details (
+    course_id INT ,
+    course_name VARCHAR(100),
+    credits INT,
+    department VARCHAR(50)
+);
+
+INSERT INTO student_details VALUES
+(1, 'Aarav Sharma', 85, 'aarav.sharma@gmail.com'),
+(2, 'Diya Verma', 78, 'diya.verma@gmail.com'),
+(3, 'Vivaan Patel', 92, 'vivaan.patel@gmail.com'),
+(4, 'Ananya Reddy', 67, 'ananya.reddy@yahoo.com'),
+(5, 'Aditya Iyer', 88, 'aditya.iyer@outlook.com'),
+(6, 'Isha Mehta', 73, 'isha.mehta@gmail.com'),
+(7, 'Karthik Das', 90, 'karthik.das@rediffmail.com'),
+(8, 'Sneha Rao', 80, 'sneha.rao@gmail.com'),
+(9, 'Rohan Joshi', 76, 'rohan.joshi@gmail.com'),
+(10, 'Priya Singh', 89, 'priya.singh@hotmail.com');
+
+
+
+
+INSERT INTO faculty_details VALUES
+(101, 'Dr. Suresh Nair', 'Physics', '9876543210'),
+(102, 'Prof. Anita Desai', 'Mathematics', '9123456789'),
+(103, 'Dr. Rajiv Menon', 'Computer Science', '9988776655'),
+(104, 'Ms. Kavita Bansal', 'English', '9345678901'),
+(105, 'Mr. Arvind Kumar', 'Mechanical Engg.', '9001234567'),
+(106, 'Mrs. Neeta Sharma', 'Chemistry', '9887766554'),
+(107, 'Dr. Mohan Reddy', 'Electrical Engg.', '9876541230'),
+(108, 'Prof. Meera Iyer', 'Civil Engg.', '9090909090'),
+(109, 'Dr. Alok Sen', 'Electronics', '9911223344'),
+(110, 'Mr. Rahul Kapoor', 'Data Science', '9801234567');
+
+INSERT INTO course_details VALUES
+(201, 'Data Structures', 4, 'CSE'),
+(202, 'Engineering Physics', 3, 'Physics'),
+(203, 'Discrete Mathematics', 4, 'Mathematics'),
+(204, 'Thermodynamics', 4, 'Mechanical'),
+(205, 'Digital Logic', 3, 'Electronics'),
+(206, 'Operating Systems', 4, 'CSE'),
+(207, 'Environmental Studies', 2, 'Humanities'),
+(208, 'Electrical Circuits', 3, 'Electrical'),
+(209, 'Structural Analysis', 4, 'Civil'),
+(210, 'Artificial Intelligence', 4, 'CSE');
+
+
+ALTER TABLE student_details
+ADD address VARCHAR(255);
+
+ALTER TABLE student_details
+ADD phoneno VARCHAR(255);
+
+ALTER TABLE student_details DROP COLUMN phoneno;
+
+ALTER TABLE student_details
+ADD country VARCHAR(255) DEFAULT 'INDIA';
+
+INSERT INTO student_details (student_id, name, marks, email, address, country)
+VALUES (12, 'John Doe', 88, 'john.doe@example.com', '123 Elm Street, New York, NY', 'USA');
+
+SELECT * FROM student_details;
+
+UPDATE student_details
+SET marks = 95
+WHERE student_id = 1;
+
+UPDATE student_details
+SET marks = 5+marks;
+
+
+
+
+

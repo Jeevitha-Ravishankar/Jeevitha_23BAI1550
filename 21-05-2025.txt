@@ -1,0 +1,126 @@
+#CLAUSE
+
+USE employees;
+
+CREATE TABLE workers (
+    worker_id INT PRIMARY KEY,
+    first_name VARCHAR(50),
+    last_name VARCHAR(50),
+    salary INT,
+    joining_date DATETIME,
+    department VARCHAR(50)
+);
+
+INSERT INTO workers VALUES
+(101, 'Anjali', 'Mehra', 120000, '2015-03-10 09:00:00', 'HR'),
+(102, 'Rohit', 'Sharma', 95000, '2016-05-15 09:00:00', 'Admin'),
+(103, 'Sneha', 'Gupta', 110000, '2017-01-20 09:00:00', 'Finance'),
+(104, 'Karan', 'Patel', 70000, '2015-09-30 09:00:00', 'IT'),
+(105, 'Neha', 'Kapoor', 130000, '2018-07-22 09:00:00', 'HR'),
+(106, 'Arjun', 'Mehta', 80000, '2019-11-12 09:00:00', 'Finance'),
+(107, 'Pooja', 'Singh', 85000, '2020-04-05 09:00:00', 'Accounting'),
+(108, 'Raj', 'Malhotra', 99000, '2021-08-16 09:00:00', 'Admin');
+
+
+SELECT * FROM workers  WHERE worker_id IN (103, 105);
+SELECT * FROM workers  WHERE worker_id NOT IN (103, 105);
+
+# btwn and not btwn
+SELECT * FROM workers WHERE salary BETWEEN 100000 AND 200000; #INCLUDED
+SELECT * FROM workers WHERE salary NOT BETWEEN 100000 AND 200000; # EXCLUDED
+
+
+#combo of all
+SELECT * FROM workers WHERE salary BETWEEN 85000 AND 120000 AND department IN ('HR', 'Finance');
+
+
+SELECT * FROM workers WHERE salary BETWEEN 100000 AND 300000 AND worker_id IN (101, 102, 103, 104);
+SELECT * FROM workers WHERE salary BETWEEN 100000 AND 300000 AND worker_id NOT IN ( 103, 104);
+
+
+#AGGREGATE FUNCTIONS
+
+SELECT MIN(salary) FROM workers;
+SELECT MAX(salary) FROM workers;
+SELECT SUM(salary) FROM workers;
+SELECT AVG(salary) FROM workers;
+SELECT * FROM workers WHERE salary = (SELECT MIN(salary) FROM workers);
+SELECT department, SUM(salary) AS total FROM workers GROUP BY department HAVING SUM(salary) > 100000;
+
+CREATE TABLE worker1 (
+    worker_id INT PRIMARY KEY,
+    first_name VARCHAR(50),
+    last_name VARCHAR(50),
+    salary INT,
+    joining_date DATETIME,
+    department VARCHAR(50)
+);
+INSERT INTO worker1 VALUES
+(201, 'Siddharth', 'Joshi', 115000, '2014-04-12 09:00:00', 'Finance'),
+(202, 'Maya', 'Nair', 98000, '2017-07-19 09:00:00', 'Accounting'),
+(203, 'Vikram', 'Choudhary', 125000, '2016-11-23 09:00:00', 'HR'),
+(204, 'Divya', 'Reddy', 76000, '2018-01-15 09:00:00', 'IT'),
+(205, 'Rahul', 'Kumar', 135000, '2019-05-30 09:00:00', 'Admin'),
+(206, 'Anita', 'Shah', 88000, '2020-02-10 09:00:00', 'Accounting'),
+(207, 'Karan', 'Verma', 83000, '2021-09-25 09:00:00', 'Admin'),
+(208, 'Sneha', 'Joshi', 105000, '2022-12-05 09:00:00', 'Finance');
+
+SELECT DISTINCT(department) FROM worker1;
+SELECT department FROM workers UNION SELECT department FROM worker1; # without duplicates
+
+SELECT department FROM workers UNION ALL SELECT department FROM worker1; # withduplicates
+
+SELECT department FROM workers WHERE salary > 90000
+UNION 
+SELECT department FROM worker1 WHERE salary < 100000;
+
+SELECT department FROM workers WHERE salary > 90000
+UNION ALL
+SELECT department FROM worker1 WHERE salary < 100000;
+
+
+SELECT first_name, salary,
+CASE
+    WHEN salary > 300000 THEN 'RICH PEOPLE'
+    WHEN salary <= 300000 AND salary >= 100000 THEN 'MIDDLE CLASS'
+    WHEN salary < 100000  THEN 'POOR CLASS'
+    ELSE 'Data not found'
+END AS STATUS_CHECK
+FROM workers;
+
+SELECT department,Salary FROM workers WHERE salary > 90000
+UNION
+SELECT department,Salary FROM worker1 WHERE salary < 100000
+ORDER BY department;
+
+SELECT department,Salary FROM workers WHERE salary > 90000
+UNION ALL
+SELECT department,Salary FROM worker1 WHERE salary < 100000
+ORDER BY department;
+
+SELECT * FROM worker1 WHERE salary < 1000000 ORDER BY SALARY DESC;
+SELECT * FROM worker1 WHERE salary < 1000000 ORDER BY SALARY ASC;
+
+
+SELECT * FROM worker1 WHERE first_name LIKE '_i%l';
+SELECT * FROM worker1 WHERE first_name LIKE '__i%';
+SELECT * FROM worker1 WHERE first_name LIKE '%a_a';
+SELECT * FROM worker1 WHERE first_name LIKE '_aa%';
+SELECT * FROM worker1 WHERE first_name LIKE 'R%' OR first_name LIKE 'S%';
+
+
+CREATE VIEW admin_team AS
+SELECT * FROM worker1 WHERE department = 'Admin' AND salary < 100000;
+
+CREATE VIEW hr_team AS
+SELECT * FROM worker1 WHERE department = 'HR'AND salary < 100000;
+
+CREATE VIEW accounting_team AS
+SELECT * FROM worker1 WHERE department = 'Accounting'AND salary < 100000;
+
+CREATE OR REPLACE VIEW admin_teams AS
+SELECT * FROM worker1 WHERE department = 'Admin' AND salary < 200000;
+
+SELECT * FROM  admin_teams;
+
+
