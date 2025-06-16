@@ -1,0 +1,102 @@
+package connection;
+
+import java.sql.*;
+
+public class DBConnection {
+    public static void main(String[] args) {
+        //JDBC
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = DriverManager.getConnection(
+                "jdbc:mysql://localhost:3306/vit",
+                "root",
+                "root"
+            );
+            System.out.println("Connection Successful: " + con);
+
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM students");
+
+            while (rs.next()) {
+            	System.out.println(rs.getInt(1)+" "+rs.getString(2));
+            }
+
+            con.close();
+        } catch (Exception e) {
+            System.out.println("Sorry for inconvenience, please check the credentials");
+            e.printStackTrace();
+        }
+    }
+}
+
+
+
+//CRUD OPERATIONS
+
+
+package crud_operation;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+
+public class DB_Connection {
+
+	public static void main(String[] args) {
+		DB_Connection obj_DB_Connection=new DB_Connection();
+		System.out.println(obj_DB_Connection.get_connection());
+		
+
+	}
+	public Connection get_connection(){
+		Connection connection = null;
+		try{
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			connection= DriverManager.getConnection("jdbc:mysql://localhost:3306/vit","root","root");
+			
+		}
+		catch(Exception e){
+			System.out.println(e);
+		}
+		return connection;
+	}
+
+}
+
+
+
+
+package crud_operation;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+
+public class CRUD_Operation {
+
+    public static void main(String[] args) {
+        CRUD_Operation objTest = new CRUD_Operation();
+
+        objTest.create_data(103, "manoj", 99);
+        objTest.create_data(104, "karthick", 100);
+    }
+
+    public void create_data(int id, String name, int marks) {
+        DB_Connection obj_DB_Connection = new DB_Connection();
+        Connection connection = obj_DB_Connection.get_connection();
+        PreparedStatement ps = null;
+
+        try {
+            String query = "INSERT INTO students (id, name, marks) VALUES (?, ?, ?)";
+            ps = connection.prepareStatement(query);
+            ps.setInt(1, id);
+            ps.setString(2, name);
+            ps.setInt(3, marks);
+            System.out.println(ps);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+}
+
+
+

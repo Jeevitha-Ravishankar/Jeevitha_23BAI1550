@@ -1,0 +1,66 @@
+use employees;
+
+SELECT * from workers;
+
+SELECT department, COUNT(department) FROM worker GROUP BY department;
+SELECT department, SUM(salary) FROM workers GROUP BY department;
+
+# more no of emp in which dep?
+SELECT COUNT(department),department FROM workers GROUP BY 
+department ORDER BY COUNT(department) DESC LIMIT 1;
+
+#low salary dep
+SELECT department, SUM(salary) AS total FROM workers GROUP BY
+department ORDER BY total LIMIT 1;
+ 
+
+# dep atleast having 3 emp 
+
+SELECT department, COUNT(department) FROM workers GROUP BY 
+department HAVING COUNT(department) > 3;
+
+SELECT department, SUM(salary) AS sume FROM workers GROUP BY
+ department ORDER BY sume DESC LIMIT 1 ;
+ 
+ #SECOND LARGEST- OFFSET 1, THIRD- OFFSET 2 
+ 
+SELECT department, SUM(salary) FROM workers GROUP BY
+ department ORDER BY SUM(salary) DESC LIMIT 1 OFFSET 1;
+
+SELECT first_name, department FROM workers WHERE salary = (SELECT MAX(salary) FROM workers);
+
+SELECT first_name, department, salary FROM workers WHERE salary > (SELECT AVG(salary) FROM workers);
+
+SELECT first_name, department FROM workers WHERE salary = (SELECT MIN(salary) FROM workers);
+
+SELECT first_name, department FROM workers WHERE salary = (SELECT MIN(salary) FROM workers
+ WHERE worker_id IN (101,102));
+
+SELECT first_name, department, joining_date FROM workers
+WHERE joining_date = (SELECT MIN(joining_date) FROM workers);
+
+CREATE TABLE student (s_id INT, s_name VARCHAR(25));
+
+INSERT INTO student VALUES
+ (101, 'Jeevitha'), 
+ (102, 'Dhana'), 
+ (103, 'Prabha'), 
+ (105, 'Mani'),
+ (106, 'Naveen');
+
+CREATE TABLE address (s_id INT, s_address VARCHAR(25));
+INSERT INTO address VALUES (101, 'coimbatore'), (104, 'chennai'), (105, 'pune');
+
+SELECT * FROM student;
+SELECT * FROM address;
+SELECT * FROM student CROSS JOIN address;
+SELECT * FROM student INNER JOIN address ON student.s_id = address.s_id;
+SELECT * FROM student NATURAL JOIN address ;
+SELECT * FROM student LEFT OUTER JOIN address ON student.s_id = address.s_id;
+SELECT * FROM student RIGHT OUTER JOIN address ON student.s_id = address.s_id;
+SELECT * FROM student FULL JOIN address;
+
+SELECT DISTINCT salary FROM workers a WHERE (
+    SELECT COUNT(DISTINCT salary) FROM workers b WHERE a.salary > b.salary
+) = 4;
+
